@@ -1,0 +1,70 @@
+<!--Content Section-->
+
+<div id="services" class="scrollto clearfix">
+  <div class="row no-padding-bottom clearfix">
+    <!--Content Left Side-->
+    <!--End Content Left Side-->
+    <!--Content of the Right Side-->    
+    <div class="col-3">
+        <mat-card class="grey">
+            <form #signupForm="ngForm" (ngSubmit)="registerUser(signupForm)">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Message</mat-label>
+                  <input matInput  #message name='message' [(ngModel)]="model.message" minlength="10" maxlength="256" placeholder="Ex. I'm feeling down...">
+                  <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                </mat-form-field>
+                <div class="form-element">
+                    <button type="submit" class="button" >Submit Form</button>
+                  </div>
+              </form>
+        </mat-card>
+        <table mat-table matTable [dataSource]="dataSource">
+          
+ <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="Angry">
+      <th mat-header-cell *matHeaderCellDef> Angry</th>
+      <td mat-cell *matCellDef="let element"> {{element.Angry}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="Fear">
+      <th mat-header-cell *matHeaderCellDef> Fear </th>
+      <td mat-cell *matCellDef="let element"> {{element.Fear}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Happy">
+      <th mat-header-cell *matHeaderCellDef> Happy </th>
+      <td mat-cell *matCellDef="let element"> {{element.Happy}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Sad">
+      <th mat-header-cell *matHeaderCellDef> Sad </th>
+      <td mat-cell *matCellDef="let element"> {{element.Sad}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Surprise">
+        <th mat-header-cell *matHeaderCellDef> Surprise </th>
+        <td mat-cell *matCellDef="let element"> {{element.Surprise}} </td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    <!--End Content Right Side-->
+    <div class="col-3">
+        <div style="z-index:1000; margin-right:5%; width: 150%" echarts [options]="options" class="echart"></div>
+      </div>
+    <div class="col-3">
+      <img class="imagee" src="../assets/images/dancer.jpg" alt="Dancer" />
+    </div>
+  </div>
+</div>
+
+<!--End of Content Section-->
+<div class="loader">
+    <mat-spinner *ngIf='IsWait'></mat-spinner>
+</div>

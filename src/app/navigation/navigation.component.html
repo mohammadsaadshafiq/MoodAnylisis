@@ -1,0 +1,51 @@
+<!--Beginning of header-->
+<div id="header" class="nav-collapse nav-solid">
+  <div class="row clearfix">
+    <div class="col-1">
+      <!--Logo-->
+      <div id="logo">
+        <!--Logo that is shown on the banner-->
+        <img src="assets/images/logo.png" id="banner-logo" alt="Landing Page" />
+        <!--End of Banner Logo-->
+
+        <!--The Logo that is shown on the sticky Navigation Bar-->
+        <img
+          src="assets/images/MoodLifter.gif"
+          id="navigation-logo"
+          alt="Landing Page"
+        />
+        <!--End of Navigation Logo-->
+      </div>
+      <!--End of Logo-->
+      <aside>
+        <app-social></app-social>
+      </aside>
+
+      <!--Main Navigation-->
+      <nav id="nav-main">
+        <ul>
+          <li>
+            <a
+              routerLink="/Home"
+              (click)="getActiveTab('home')"
+              [class.active]="activetab === 'home'"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/About"
+              (click)="getActiveTab('about')"
+              [class.active]="activetab === 'about'"
+              >Sentiment Analysis</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <!--End of Main Navigation-->
+      <div id="nav-trigger"><span></span></div>
+      <nav id="nav-mobile"></nav>
+    </div>
+  </div>
+</div>
+<!--End of Header-->
