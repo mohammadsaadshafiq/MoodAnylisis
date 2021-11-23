@@ -25,7 +25,7 @@ export class ContentComponent implements OnInit {
   value5=0
   IsWait
   Url="https://api.promptapi.com/text_to_emotion";
-   model={};
+  model: any = {};
   constructor(private http: HttpClient) {
     this.dataSource = new MatTableDataSource();
   }

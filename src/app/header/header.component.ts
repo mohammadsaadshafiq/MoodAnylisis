@@ -7,7 +7,7 @@ import { ConfigService } from '../config.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  header = { };
+  header:any = { };
 
   constructor(private config: ConfigService) {}
 
