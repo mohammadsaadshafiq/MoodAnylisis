@@ -87,7 +87,9 @@ figure {
     z-index: 999999;
     pointer-events: none;
 }
-
+.mat-dialog-container{
+    background-color: 	#ffffff
+}
 .page-border .bottom-border, .page-border .left-border, .page-border .right-border, .page-border .top-border {
     background: #f3f3ef;
     position: fixed;
@@ -419,6 +421,7 @@ section {
     display: inline-block;
     border-width: 3px;
     border-style: solid;
+    background-color:white 
 }
 
 /* Play Button */

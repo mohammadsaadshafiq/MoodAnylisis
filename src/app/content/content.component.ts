@@ -5,6 +5,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import {ViewChild} from '@angular/core';
 import { MatTable, MatTableDataSource } from "@angular/material/table";
+import {QuestionsModalComponent} from '../questions-modal/questions-modal.component'
+import { MatDialog } from "@angular/material/dialog";
+import {MoodApiService} from '../mood-api.service'
 @Component({
   selector: "app-content",
   templateUrl: "./content.component.html",
@@ -24,9 +27,9 @@ export class ContentComponent implements OnInit {
   value4=0
   value5=0
   IsWait
-  Url="https://api.promptapi.com/text_to_emotion";
+  ans
   model: any = {};
-  constructor(private http: HttpClient) {
+  constructor(public _MoodApiService :MoodApiService, private http: HttpClient,public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource();
   }
   getTooltipFormatter() {
@@ -95,11 +98,24 @@ export class ContentComponent implements OnInit {
         ],
       };
   }
-  registerUser(form: NgForm) {
+  openDialog() {
+    const dialogRef = this.dialog.open(QuestionsModalComponent, {
+      height: '60%',
+      width: '50%'
+  });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result.data}`);
+      this.ans =result.data
+      if(this.ans){
+        this.registerUser();
+      }
+    });
+  }
+  registerUser() {
     var name = "message"
-    let value=form.value[name];
     this.IsWait =true
-    this.addCampaign(value).subscribe(x => {
+    debugger;
+    if(this.ans){this._MoodApiService.addCampaign(this.ans).subscribe(x => {
       this.data = x ;
       this.value1 =this.data.Angry 
       this.value2=this.data.Happy 
@@ -109,20 +125,11 @@ export class ContentComponent implements OnInit {
       this.ELEMENT_DATA.push(this.data)
       this.delete()
       this.ngOnInit()
-    })
-  }
-  addCampaign(value:string) {
-    const headerDict = {
-      //'apikey': 'e2ZnOVS1SR9UI9qcPRvudgC8GhjeFYeN',
-      //'apikey': 'w1ve6O9zLxJjEnAEVHpDqGXvHg1rfDTF',
-      'apikey': '6sl9H2vhAd0og41qLF1ZffxXXsoCNDSP',
+    })}
+    else{
+      alert("API Error 404")
     }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders(headerDict), 
-    };
-    return this.http.post(this.Url,value,requestOptions )
   }
-  
   displayedColumns: string[] = ['Angry', 'Happy', 'Sad', 'Surprise','Fear'];
   dataSource = this.data;
   ELEMENT_DATA: PeriodicElement[] = [];

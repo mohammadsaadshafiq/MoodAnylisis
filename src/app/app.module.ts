@@ -53,6 +53,8 @@ import {FormsModule} from '@angular/forms'
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
 import { HttpClientModule} from '@angular/common/http';
+import { QuestionsModalComponent } from './questions-modal/questions-modal.component';
+import { Questions } from './questions-modal/questions';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import { HttpClientModule} from '@angular/common/http';
     HeaderComponent,
     SocialComponent,
     NavigationComponent,
+    QuestionsModalComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule,MatAutocompleteModule,
     MatBadgeModule,FormsModule,
@@ -104,7 +107,7 @@ import { HttpClientModule} from '@angular/common/http';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,],
-  providers: [ConfigService],
+  providers: [ConfigService,Questions],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

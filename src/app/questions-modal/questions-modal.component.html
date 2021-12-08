@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Questions</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>{{que}}</h3>
+    <mat-form-field *ngIf="!end" style="width: 100%" appearance="outline">
+        <mat-label>Answer</mat-label>
+        <input matInput  #message name='message' [(ngModel)]="value" minlength="10" maxlength="256" placeholder="Ex. I'm feeling down...">
+      </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+<button *ngIf="!end" style="width: 20%;"mat-button (click)="next()" class="button">Next</button>
+<!-- <button *ngIf="!end" style="width: 15%;"mat-button (click)="prev()" class="button">Back</button> -->
+<button *ngIf="end" mat-dialog-close style="width: 30%;"mat-button (click)="done()" class="button">Submit</button>
+<button mat-button class="button"(click)="closeDialog()">Cancel</button>
+  
+</mat-dialog-actions>
+
+
+<!-- Copyright 2021 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at https://angular.io/license -->

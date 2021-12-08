@@ -7,14 +7,10 @@
     <!--Content of the Right Side-->    
     <div class="col-3">
         <mat-card class="grey">
-            <form #signupForm="ngForm" (ngSubmit)="registerUser(signupForm)">
-                <mat-form-field class="example-full-width" appearance="fill">
-                  <mat-label>Message</mat-label>
-                  <input matInput  #message name='message' [(ngModel)]="model.message" minlength="10" maxlength="256" placeholder="Ex. I'm feeling down...">
-                  <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
-                </mat-form-field>
+            <form #signupForm="ngForm">
                 <div class="form-element">
-                    <button type="submit" class="button" >Submit Form</button>
+                    <!-- <button type="submit" class="button" >Submit Form</button> -->
+                    <button class="button"(click)="openDialog()" >Take the Quiz</button>
                   </div>
               </form>
         </mat-card>
