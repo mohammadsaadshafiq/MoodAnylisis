@@ -3,7 +3,7 @@ export const configuration = {
     heading: 'Lift My Mood',
     headingtext:
       'This tool will anaylyse your mood according to text provided',
-    buttontext: 'Mood Lifter',
+    buttontext: 'Mood saad',
     buttonlink: '\Services'
   }
 };
