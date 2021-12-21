@@ -27,6 +27,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var _angular_material_table__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/table */ "+0xr");
+/* harmony import */ var _questions_modal_questions_modal_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../questions-modal/questions-modal.component */ "xe/e");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
+/* harmony import */ var _mood_api_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mood-api.service */ "zPz5");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -42,9 +45,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var ContentComponent = /** @class */ (function () {
-    function ContentComponent(http) {
+    function ContentComponent(_MoodApiService, http, dialog) {
+        this._MoodApiService = _MoodApiService;
         this.http = http;
+        this.dialog = dialog;
         this.options = {};
         this.pageTitle = 'Deal Share by Contact';
         this.chartData = [];
@@ -56,7 +64,6 @@ var ContentComponent = /** @class */ (function () {
         this.value3 = 0;
         this.value4 = 0;
         this.value5 = 0;
-        this.Url = "https://api.promptapi.com/text_to_emotion";
         this.model = {};
         this.displayedColumns = ['Angry', 'Happy', 'Sad', 'Surprise', 'Fear'];
         this.dataSource = this.data;
@@ -127,36 +134,46 @@ var ContentComponent = /** @class */ (function () {
             ],
         };
     };
-    ContentComponent.prototype.registerUser = function (form) {
+    ContentComponent.prototype.openDialog = function () {
         var _this = this;
-        var name = "message";
-        var value = form.value[name];
-        this.IsWait = true;
-        this.addCampaign(value).subscribe(function (x) {
-            _this.data = x;
-            _this.value1 = _this.data.Angry;
-            _this.value2 = _this.data.Happy;
-            _this.value3 = _this.data.Sad;
-            _this.value4 = _this.data.Surprise;
-            _this.value5 = _this.data.Fear;
-            _this.ELEMENT_DATA.push(_this.data);
-            _this.delete();
-            _this.ngOnInit();
+        var dialogRef = this.dialog.open(_questions_modal_questions_modal_component__WEBPACK_IMPORTED_MODULE_5__["QuestionsModalComponent"], {
+            height: '60%',
+            width: '50%'
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            console.log("Dialog result: " + result.data);
+            _this.ans = result.data;
+            if (_this.ans) {
+                _this.registerUser();
+            }
         });
     };
-    ContentComponent.prototype.addCampaign = function (value) {
-        var headerDict = {
-            //'apikey': 'e2ZnOVS1SR9UI9qcPRvudgC8GhjeFYeN',
-            //'apikey': 'w1ve6O9zLxJjEnAEVHpDqGXvHg1rfDTF',
-            'apikey': '6sl9H2vhAd0og41qLF1ZffxXXsoCNDSP',
-        };
-        var requestOptions = {
-            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpHeaders"](headerDict),
-        };
-        return this.http.post(this.Url, value, requestOptions);
+    ContentComponent.prototype.registerUser = function () {
+        var _this = this;
+        var name = "message";
+        this.IsWait = true;
+        debugger;
+        if (this.ans) {
+            this._MoodApiService.addCampaign(this.ans).subscribe(function (x) {
+                _this.data = x;
+                _this.value1 = _this.data.Angry;
+                _this.value2 = _this.data.Happy;
+                _this.value3 = _this.data.Sad;
+                _this.value4 = _this.data.Surprise;
+                _this.value5 = _this.data.Fear;
+                _this.ELEMENT_DATA.push(_this.data);
+                _this.delete();
+                _this.ngOnInit();
+            });
+        }
+        else {
+            alert("API Error 404");
+        }
     };
     ContentComponent.ctorParameters = function () { return [
-        { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] }
+        { type: _mood_api_service__WEBPACK_IMPORTED_MODULE_7__["MoodApiService"] },
+        { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] },
+        { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__["MatDialog"] }
     ]; };
     ContentComponent.propDecorators = {
         matTable: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"], args: [_angular_material_table__WEBPACK_IMPORTED_MODULE_4__["MatTable"],] }]
@@ -167,7 +184,7 @@ var ContentComponent = /** @class */ (function () {
             template: _raw_loader_content_component_html__WEBPACK_IMPORTED_MODULE_0__["default"],
             styles: [_content_component_css__WEBPACK_IMPORTED_MODULE_1__["default"]]
         }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]])
+        __metadata("design:paramtypes", [_mood_api_service__WEBPACK_IMPORTED_MODULE_7__["MoodApiService"], _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__["MatDialog"]])
     ], ContentComponent);
     return ContentComponent;
 }());
@@ -198,7 +215,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<!--Content Section-->\r\n\r\n<div id=\"services\" class=\"scrollto clearfix\">\r\n  <div class=\"row no-padding-bottom clearfix\">\r\n    <!--Content Left Side-->\r\n    <!--End Content Left Side-->\r\n    <!--Content of the Right Side-->    \r\n    <div class=\"col-3\">\r\n        <mat-card class=\"grey\">\r\n            <form #signupForm=\"ngForm\" (ngSubmit)=\"registerUser(signupForm)\">\r\n                <mat-form-field class=\"example-full-width\" appearance=\"fill\">\r\n                  <mat-label>Message</mat-label>\r\n                  <input matInput  #message name='message' [(ngModel)]=\"model.message\" minlength=\"10\" maxlength=\"256\" placeholder=\"Ex. I'm feeling down...\">\r\n                  <mat-hint align=\"end\">{{message.value.length}} / 256</mat-hint>\r\n                </mat-form-field>\r\n                <div class=\"form-element\">\r\n                    <button type=\"submit\" class=\"button\" >Submit Form</button>\r\n                  </div>\r\n              </form>\r\n        </mat-card>\r\n        <table mat-table matTable [dataSource]=\"dataSource\">\r\n          \r\n <!--- Note that these columns can be defined in any order.\r\n        The actual rendered columns are set as a property on the row definition\" -->\r\n\r\n  <!-- Position Column -->\r\n  <ng-container matColumnDef=\"Angry\">\r\n      <th mat-header-cell *matHeaderCellDef> Angry</th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Angry}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Name Column -->\r\n    <ng-container matColumnDef=\"Fear\">\r\n      <th mat-header-cell *matHeaderCellDef> Fear </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Fear}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Weight Column -->\r\n    <ng-container matColumnDef=\"Happy\">\r\n      <th mat-header-cell *matHeaderCellDef> Happy </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Happy}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Symbol Column -->\r\n    <ng-container matColumnDef=\"Sad\">\r\n      <th mat-header-cell *matHeaderCellDef> Sad </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Sad}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"Surprise\">\r\n        <th mat-header-cell *matHeaderCellDef> Surprise </th>\r\n        <td mat-cell *matCellDef=\"let element\"> {{element.Surprise}} </td>\r\n      </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n        </table>\r\n      </div>\r\n    <!--End Content Right Side-->\r\n    <div class=\"col-3\">\r\n        <div style=\"z-index:1000; margin-right:5%; width: 150%\" echarts [options]=\"options\" class=\"echart\"></div>\r\n      </div>\r\n    <div class=\"col-3\">\r\n      <img class=\"imagee\" src=\"../assets/images/dancer.jpg\" alt=\"Dancer\" />\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!--End of Content Section-->\r\n<div class=\"loader\">\r\n    <mat-spinner *ngIf='IsWait'></mat-spinner>\r\n</div>\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<!--Content Section-->\r\n\r\n<div id=\"services\" class=\"scrollto clearfix\">\r\n  <div class=\"row no-padding-bottom clearfix\">\r\n    <!--Content Left Side-->\r\n    <!--End Content Left Side-->\r\n    <!--Content of the Right Side-->    \r\n    <div class=\"col-3\">\r\n        <mat-card class=\"grey\">\r\n            <form #signupForm=\"ngForm\">\r\n                <div class=\"form-element\">\r\n                    <!-- <button type=\"submit\" class=\"button\" >Submit Form</button> -->\r\n                    <button class=\"button\"(click)=\"openDialog()\" >Take the Quiz</button>\r\n                  </div>\r\n              </form>\r\n        </mat-card>\r\n        <table mat-table matTable [dataSource]=\"dataSource\">\r\n          \r\n <!--- Note that these columns can be defined in any order.\r\n        The actual rendered columns are set as a property on the row definition\" -->\r\n\r\n  <!-- Position Column -->\r\n  <ng-container matColumnDef=\"Angry\">\r\n      <th mat-header-cell *matHeaderCellDef> Angry</th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Angry}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Name Column -->\r\n    <ng-container matColumnDef=\"Fear\">\r\n      <th mat-header-cell *matHeaderCellDef> Fear </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Fear}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Weight Column -->\r\n    <ng-container matColumnDef=\"Happy\">\r\n      <th mat-header-cell *matHeaderCellDef> Happy </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Happy}} </td>\r\n    </ng-container>\r\n  \r\n    <!-- Symbol Column -->\r\n    <ng-container matColumnDef=\"Sad\">\r\n      <th mat-header-cell *matHeaderCellDef> Sad </th>\r\n      <td mat-cell *matCellDef=\"let element\"> {{element.Sad}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"Surprise\">\r\n        <th mat-header-cell *matHeaderCellDef> Surprise </th>\r\n        <td mat-cell *matCellDef=\"let element\"> {{element.Surprise}} </td>\r\n      </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n        </table>\r\n      </div>\r\n    <!--End Content Right Side-->\r\n    <div class=\"col-3\">\r\n        <div style=\"z-index:1000; margin-right:5%; width: 150%\" echarts [options]=\"options\" class=\"echart\"></div>\r\n      </div>\r\n    <div class=\"col-3\">\r\n      <img class=\"imagee\" src=\"../assets/images/dancer.jpg\" alt=\"Dancer\" />\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!--End of Content Section-->\r\n<div class=\"loader\">\r\n    <mat-spinner *ngIf='IsWait'></mat-spinner>\r\n</div>\r\n");
 
 /***/ }),
 
@@ -700,12 +717,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var ngx_echarts__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ngx-echarts */ "DKVz");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _questions_modal_questions_modal_component__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./questions-modal/questions-modal.component */ "xe/e");
+/* harmony import */ var _questions_modal_questions__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./questions-modal/questions */ "iiD/");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -776,6 +797,7 @@ var AppModule = /** @class */ (function () {
                 _header_header_component__WEBPACK_IMPORTED_MODULE_10__["HeaderComponent"],
                 _social_social_component__WEBPACK_IMPORTED_MODULE_11__["SocialComponent"],
                 _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_12__["NavigationComponent"],
+                _questions_modal_questions_modal_component__WEBPACK_IMPORTED_MODULE_53__["QuestionsModalComponent"],
             ],
             imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_13__["AppRoutingModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_49__["BrowserAnimationsModule"], _angular_material_autocomplete__WEBPACK_IMPORTED_MODULE_16__["MatAutocompleteModule"],
                 _angular_material_badge__WEBPACK_IMPORTED_MODULE_17__["MatBadgeModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_50__["FormsModule"],
@@ -813,7 +835,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_46__["MatToolbarModule"],
                 _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_47__["MatTooltipModule"],
                 _angular_material_tree__WEBPACK_IMPORTED_MODULE_48__["MatTreeModule"],],
-            providers: [_config_service__WEBPACK_IMPORTED_MODULE_14__["ConfigService"]],
+            providers: [_config_service__WEBPACK_IMPORTED_MODULE_14__["ConfigService"], _questions_modal_questions__WEBPACK_IMPORTED_MODULE_54__["Questions"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_2__["AppComponent"]]
         })
     ], AppModule);
@@ -949,6 +971,19 @@ var TestimonialsComponent = /** @class */ (function () {
 }());
 
 
+
+/***/ }),
+
+/***/ "dE0m":
+/*!***************************************************************!*\
+  !*** ./src/app/questions-modal/questions-modal.component.css ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJxdWVzdGlvbnMtbW9kYWwuY29tcG9uZW50LmNzcyJ9 */");
 
 /***/ }),
 
@@ -1098,6 +1133,65 @@ var FooterComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "iiD/":
+/*!**********************************************!*\
+  !*** ./src/app/questions-modal/questions.ts ***!
+  \**********************************************/
+/*! exports provided: Questions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Questions", function() { return Questions; });
+var Questions = /** @class */ (function () {
+    function Questions() {
+        this.questions = {
+            1: "What has been your greatest accomplishment?",
+            2: "What has been your greatest failure?",
+            3: "What is your biggest fear?",
+            4: "What is your favorite hobby?",
+            5: "What would you change about yourself if you could?",
+            6: "What really makes you angry?",
+        };
+        this.cur = 0;
+    }
+    Questions.prototype.next = function (cur) {
+        this.check = this.questions[this.cur + 1];
+        if (this.check) {
+            this.cur = this.cur + 1;
+            var value = this.questions[this.cur];
+            return value;
+        }
+        else {
+            return 'Submit for the result';
+        }
+    };
+    Questions.prototype.previous = function (cur) {
+        this.check = this.questions[this.cur - 1];
+        if (this.check) {
+            this.cur = this.cur - 1;
+            var value = this.questions[this.cur];
+            return value;
+        }
+        else {
+            alert("No Previous Question");
+            return 'Click Next To Start';
+        }
+    };
+    Questions.prototype.getAll = function () {
+        for (var _i = 0, _a = Object.keys(this.questions); _i < _a.length; _i++) {
+            var key = _a[_i];
+            var value = this.questions[key];
+            return value;
+        }
+    };
+    return Questions;
+}());
+
+
+
+/***/ }),
+
 /***/ "j0V1":
 /*!************************************************************************************!*\
   !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/social/social.component.html ***!
@@ -1170,6 +1264,19 @@ var NavigationComponent = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("<header id=\"banner\" class=\"scrollto clearfix\" data-enllax-ratio=\".5\">\r\n  <!--Banner Content-->\r\n  <div id=\"banner-content\" class=\"row clearfix\">\r\n\r\n    <div class=\"col-38\">\r\n\r\n      <div class=\"section-heading\">\r\n        <h1>{{ header.heading }}</h1>\r\n        <h2>{{ header.headingtext }}</h2>\r\n      </div>\r\n\r\n      <!--Call to Action-->\r\n      <a href=\"{{ header.buttonlink }}\" class=\"button\">{{ header.buttontext }}</a>\r\n      <!--End Call to Action-->\r\n\r\n    </div>\r\n\r\n  </div>\r\n  <!--End of Row-->\r\n</header>\r\n");
+
+/***/ }),
+
+/***/ "oy8I":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/questions-modal/questions-modal.component.html ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<h2 mat-dialog-title>Questions</h2>\n<mat-dialog-content class=\"mat-typography\">\n  <h3>{{que}}</h3>\n    <mat-form-field *ngIf=\"!end\" style=\"width: 100%\" appearance=\"outline\">\n        <mat-label>Answer</mat-label>\n        <input matInput  #message name='message' [(ngModel)]=\"value\" minlength=\"10\" maxlength=\"256\" placeholder=\"Ex. I'm feeling down...\">\n      </mat-form-field>\n</mat-dialog-content>\n<mat-dialog-actions align=\"end\">\n<button *ngIf=\"!end\" style=\"width: 20%;\"mat-button (click)=\"next()\" class=\"button\">Next</button>\n<!-- <button *ngIf=\"!end\" style=\"width: 15%;\"mat-button (click)=\"prev()\" class=\"button\">Back</button> -->\n<button *ngIf=\"end\" mat-dialog-close style=\"width: 30%;\"mat-button (click)=\"done()\" class=\"button\">Submit</button>\n<button mat-button class=\"button\"(click)=\"closeDialog()\">Cancel</button>\n  \n</mat-dialog-actions>\n\n\n<!-- Copyright 2021 Google LLC. All Rights Reserved.\n    Use of this source code is governed by an MIT-style license that\n    can be found in the LICENSE file at https://angular.io/license -->");
 
 /***/ }),
 
@@ -1292,6 +1399,176 @@ var ConfigService = /** @class */ (function () {
         __metadata("design:paramtypes", [])
     ], ConfigService);
     return ConfigService;
+}());
+
+
+
+/***/ }),
+
+/***/ "xe/e":
+/*!**************************************************************!*\
+  !*** ./src/app/questions-modal/questions-modal.component.ts ***!
+  \**************************************************************/
+/*! exports provided: QuestionsModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionsModalComponent", function() { return QuestionsModalComponent; });
+/* harmony import */ var _raw_loader_questions_modal_component_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! raw-loader!./questions-modal.component.html */ "oy8I");
+/* harmony import */ var _questions_modal_component_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./questions-modal.component.css */ "dE0m");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _questions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./questions */ "iiD/");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var QuestionsModalComponent = /** @class */ (function () {
+    function QuestionsModalComponent(_questions, dialogRef, data) {
+        this._questions = _questions;
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.answers = [];
+        this.cur = null;
+        this.end = false;
+        this.local_data = __assign({}, data);
+        this.action = this.local_data.action;
+    }
+    QuestionsModalComponent.prototype.ngOnInit = function () {
+        this.value = null;
+        this.que = null;
+        this.answers = [];
+        this.cur = 0;
+        this.local_data = null;
+        this.getVal();
+    };
+    QuestionsModalComponent.prototype.doAction = function () {
+        this.dialogRef.close({ event: this.action, data: this.local_data });
+    };
+    QuestionsModalComponent.prototype.closeDialog = function () {
+        this.dialogRef.close({ event: 'Cancel' });
+    };
+    QuestionsModalComponent.prototype.getVal = function () {
+        this.que = this._questions.next();
+    };
+    QuestionsModalComponent.prototype.next = function () {
+        if (!this.value) {
+            alert("Please Answer");
+        }
+        if (this.value) {
+            this.que = this._questions.next(this.cur);
+            this.answers.push(this.value);
+            this.value = null;
+        }
+        if (this.que == 'Submit for the result') {
+            this.end = true;
+        }
+    };
+    QuestionsModalComponent.prototype.prev = function () {
+        this.que = this._questions.previous(this.cur);
+        this.end = false;
+    };
+    QuestionsModalComponent.prototype.done = function () {
+        if (this.answers) {
+            this.local_data = this.answers.join();
+            this.doAction();
+        }
+        else {
+            alert("Please fill the questions again");
+            this.closeDialog();
+        }
+    };
+    QuestionsModalComponent.ctorParameters = function () { return [
+        { type: _questions__WEBPACK_IMPORTED_MODULE_3__["Questions"] },
+        { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialogRef"] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Inject"], args: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MAT_DIALOG_DATA"],] }] }
+    ]; };
+    QuestionsModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
+            selector: 'app-questions-modal',
+            template: _raw_loader_questions_modal_component_html__WEBPACK_IMPORTED_MODULE_0__["default"],
+            styles: [_questions_modal_component_css__WEBPACK_IMPORTED_MODULE_1__["default"]]
+        }),
+        __metadata("design:paramtypes", [_questions__WEBPACK_IMPORTED_MODULE_3__["Questions"],
+            _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialogRef"], Object])
+    ], QuestionsModalComponent);
+    return QuestionsModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "zPz5":
+/*!*************************************!*\
+  !*** ./src/app/mood-api.service.ts ***!
+  \*************************************/
+/*! exports provided: MoodApiService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MoodApiService", function() { return MoodApiService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MoodApiService = /** @class */ (function () {
+    function MoodApiService(http) {
+        this.http = http;
+        this.Url = "https://api.promptapi.com/text_to_emotion";
+        this.allAnswers = null;
+    }
+    MoodApiService.prototype.addCampaign = function (value) {
+        var headerDict = {
+            'apikey': 'e2ZnOVS1SR9UI9qcPRvudgC8GhjeFYeN',
+        };
+        var requestOptions = {
+            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"](headerDict),
+        };
+        return this.http.post(this.Url, value, requestOptions);
+    };
+    MoodApiService.ctorParameters = function () { return [
+        { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
+    ]; };
+    MoodApiService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+    ], MoodApiService);
+    return MoodApiService;
 }());
 
 
