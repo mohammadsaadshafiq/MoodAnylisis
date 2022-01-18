@@ -1,66 +1,75 @@
 <!--Content Section-->
 
-<div id="services" class="scrollto clearfix">
-  <div class="row no-padding-bottom clearfix">
+<div id="services" class="fix scrollto clearfix">
+  <div class=" fix row no-padding-bottom clearfix">
     <!--Content Left Side-->
     <!--End Content Left Side-->
-    <!--Content of the Right Side-->    
-    <div class="col-3">
-        <mat-card class="grey">
-            <form #signupForm="ngForm">
-                <div class="form-element">
-                    <!-- <button type="submit" class="button" >Submit Form</button> -->
-                    <button class="button"(click)="openDialog()" >Take the Quiz</button>
-                  </div>
-              </form>
-        </mat-card>
+    <!--Content of the Right Side-->
+    <div class="col-2">
+      <mat-card class="grey">
+        <form #signupForm="ngForm">
+          <div class="form-element">
+            <mat-dialog-content class="mat-typography">
+              <mat-form-field style="width: 100%" appearance="outline">
+                <mat-label>What's in your mind?</mat-label>
+                <input
+                  matInput
+                  #message
+                  name="message"
+                  [(ngModel)]="val"
+                  minlength="10"
+                  placeholder="Ex. How are you feeling today..."
+                />
+              </mat-form-field>
+            </mat-dialog-content>
+            <button class="button" (click)="save()">Save</button>
+            <button
+              style="margin-left: 5px"
+              class="button"
+              (click)="concatinate()"
+            >
+              Analysis
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+    <div class="col-2">
+      <div
+        style="z-index:1000; margin-right:5%; width: 150%"
+        echarts
+        [options]="options"
+        class="echart"
+      ></div>
+    </div>
+    <div class="col-1">
+      <div class="height-adjust">
         <table mat-table matTable [dataSource]="dataSource">
-          
- <!--- Note that these columns can be defined in any order.
+        <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="Angry">
-      <th mat-header-cell *matHeaderCellDef> Angry</th>
-      <td mat-cell *matCellDef="let element"> {{element.Angry}} </td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="Fear">
-      <th mat-header-cell *matHeaderCellDef> Fear </th>
-      <td mat-cell *matCellDef="let element"> {{element.Fear}} </td>
-    </ng-container>
-  
-    <!-- Weight Column -->
-    <ng-container matColumnDef="Happy">
-      <th mat-header-cell *matHeaderCellDef> Happy </th>
-      <td mat-cell *matCellDef="let element"> {{element.Happy}} </td>
-    </ng-container>
-  
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="Sad">
-      <th mat-header-cell *matHeaderCellDef> Sad </th>
-      <td mat-cell *matCellDef="let element"> {{element.Sad}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Surprise">
-        <th mat-header-cell *matHeaderCellDef> Surprise </th>
-        <td mat-cell *matCellDef="let element"> {{element.Surprise}} </td>
-      </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+        <!-- Position Column -->
+        <ng-container matColumnDef="Date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.Date }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Dairy">
+          <th mat-header-cell *matHeaderCellDef>Dairy</th>
+          <td mat-cell *matCellDef="let element">{{ element.Dairy }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
       </div>
-    <!--End Content Right Side-->
-    <div class="col-3">
-        <div style="z-index:1000; margin-right:5%; width: 150%" echarts [options]="options" class="echart"></div>
-      </div>
-    <div class="col-3">
-      <img class="imagee" src="../assets/images/dancer.jpg" alt="Dancer" />
     </div>
+    <!--End Content Right Side-->
+   
   </div>
 </div>
 
 <!--End of Content Section-->
 <div class="loader">
-    <mat-spinner *ngIf='IsWait'></mat-spinner>
+  <mat-spinner *ngIf="IsWait"></mat-spinner>
 </div>

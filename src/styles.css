@@ -163,10 +163,21 @@ input, textarea {
 
 }
 
+.mat-column-Date {
+    flex: none;
+    width: 100px;
+}
+.mat-row {
+    min-width: max-content;
+  }
 .loader {
     left: 50%;
     margin-left: -4em;
   }
+  .fix {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 center {
     width: 70px;
     height: 300px;
@@ -693,6 +704,14 @@ nav#nav-mobile a:hover {
 }
 
 /* --------- 2.5 Social Elements ---------- */
+.height-adjust{
+    height: 500px;
+    overflow-y: auto;
+
+}
+.height-adjust thead {
+    background-color: rgb(222 222 222 / 26%);
+}
 
 #header .col-4 {
     text-align: right;
