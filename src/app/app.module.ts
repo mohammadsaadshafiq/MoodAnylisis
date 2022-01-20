@@ -55,7 +55,9 @@ import * as echarts from 'echarts';
 import { HttpClientModule} from '@angular/common/http';
 import { QuestionsModalComponent } from './questions-modal/questions-modal.component';
 import { Questions } from './questions-modal/questions';
-
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../../src/environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +75,8 @@ import { Questions } from './questions-modal/questions';
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule,MatAutocompleteModule,
     MatBadgeModule,FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
     MatBottomSheetModule,
     MatButtonModule,HttpClientModule,
     NgxEchartsModule,

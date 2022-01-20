@@ -2,12 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, map, tap } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { throwError, Observable } from "rxjs";
 import { ViewChild } from "@angular/core";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { QuestionsModalComponent } from "../questions-modal/questions-modal.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MoodApiService } from "../mood-api.service";
+import { AngularFirestore } from '@angular/fire/firestore';
 @Component({
   selector: "app-content",
   templateUrl: "./content.component.html",
@@ -34,6 +35,7 @@ export class ContentComponent implements OnInit {
   ans;
   model: any = {};
   constructor(
+    public store: AngularFirestore,
     public _MoodApiService: MoodApiService,
     private http: HttpClient,
     public dialog: MatDialog
@@ -137,6 +139,9 @@ export class ContentComponent implements OnInit {
     this.ana = true;
   }
   registerUser() {
+    let todo = this.store.collection('todo').valueChanges({ idField: 'id' }) as Observable<any>;
+    let inProgress = this.store.collection('inProgress').valueChanges({ idField: 'id' }) as Observable<any>;
+    let done = this.store.collection('done').valueChanges({ idField: 'id' }) as Observable<any>;
     // var name = "message"
     // this.IsWait =true
     // debugger;
