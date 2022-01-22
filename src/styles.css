@@ -709,6 +709,9 @@ nav#nav-mobile a:hover {
     overflow-y: auto;
 
 }
+.mat-form-field-appearance-outline .mat-form-field-flex {
+    height: 250px;
+}
 .height-adjust thead {
     background-color: rgb(222 222 222 / 26%);
 }

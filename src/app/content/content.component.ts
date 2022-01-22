@@ -8,16 +8,26 @@ import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { QuestionsModalComponent } from "../questions-modal/questions-modal.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MoodApiService } from "../mood-api.service";
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from "@angular/fire/firestore";
+import {
+  AngularFireDatabase,
+  AngularFireList,
+  AngularFireObject
+} from "@angular/fire/database";
+import { Test } from "tslint";
 @Component({
   selector: "app-content",
   templateUrl: "./content.component.html",
   styleUrls: ["./content.component.css"]
 })
 export class ContentComponent implements OnInit {
+  studentsRef: AngularFireList<any>; // Reference to Student data list, its an Observable
+  studentRef: AngularFireObject<any>; // Reference to Student object, its an Observable too
   options: any = {};
   val;
   utc;
+  policies;
+  items: Observable<any[]>;
   ana = false;
   dataList = [];
   themeSubscription: any;
@@ -33,13 +43,22 @@ export class ContentComponent implements OnInit {
   value5 = 0;
   IsWait;
   ans;
+  ELEMENT_DATA = [];
   model: any = {};
   constructor(
+    public db: AngularFireDatabase,
     public store: AngularFirestore,
     public _MoodApiService: MoodApiService,
     private http: HttpClient,
     public dialog: MatDialog
   ) {
+    //this.items = db.list("Dairy").valueChanges();
+    this.studentsRef = db.list("Dairy");
+    this.items = this.studentsRef.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      )
+    );
     this.dataSource = new MatTableDataSource();
   }
   getTooltipFormatter() {
@@ -49,12 +68,72 @@ export class ContentComponent implements OnInit {
   }
   @ViewChild(MatTable) matTable: MatTable<any>;
   delete(): void {
-    this.matTable.dataSource = this.ELEMENT_DATA;
+    this.matTable.dataSource = this.items;
     this.matTable.renderRows();
     this.IsWait = false;
   }
 
   ngOnInit() {
+    this.eChart();
+    setTimeout( () => { this.delete();}, 200 );
+  }
+
+  save() {
+    if (!this.val){
+      alert("Please enter text")
+    }
+    else{
+      this.utc = new Date()
+      .toJSON()
+      .slice(0, 10)
+      .replace(/-/g, "/");
+    this.studentsRef.push({
+      Dairy: this.val,
+      Date: this.utc,
+    });
+    let a = {
+      Dairy: this.val,
+      Date: this.utc
+    };
+    this.ELEMENT_DATA.push(a);
+    this.delete();
+    this.val = null;
+    }
+
+  }
+  concatinate() {
+    this.ana = true;
+  }
+  removeCart(j){
+    let tru =confirm("Are you sure you want to delete it?")
+    debugger;
+    if (tru == true ){
+      this.studentsRef.remove(j.key);
+    }
+  }
+  registerUser() {
+    // Create Student
+    // var name = "message"
+    // this.IsWait =true
+    // debugger;
+    // if(this.ans){this._MoodApiService.addCampaign(this.ans).subscribe(x => {
+    //   this.data = x ;
+    //   this.value1 =this.data.Angry
+    //   this.value2=this.data.Happy
+    //   this.value3=this.data.Sad
+    //   this.value4 =this.data.Surprise
+    //   this.value5=this.data.Fear
+    //   this.ELEMENT_DATA.push(this.data)
+    //   this.delete()
+    //   this.ngOnInit()
+    // })}
+    // else{
+    //   alert("API Error 404")
+    // }
+  }
+  displayedColumns: string[] = ["Dairy", "Date","delete"];
+  dataSource = this.data;
+  eChart() {
     const echarts: any = 0;
     this.options = {
       backgroundColor: echarts.bg,
@@ -108,69 +187,8 @@ export class ContentComponent implements OnInit {
       ]
     };
   }
-  openDialog() {
-    const dialogRef = this.dialog.open(QuestionsModalComponent, {
-      height: "60%",
-      width: "50%"
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result.data}`);
-      this.ans = result.data;
-      if (this.ans) {
-        this.registerUser();
-      }
-    });
-  }
-  save() {
-    this.utc = new Date()
-      .toJSON()
-      .slice(0, 10)
-      .replace(/-/g, "/");
-    let a: PeriodicElement = {
-      Dairy: this.val,
-      Date: this.utc
-    };
-    this.ELEMENT_DATA.push(a);
-    this.delete();
-    this.val = null;
-  }
-  
-  concatinate() {
-    this.ana = true;
-  }
-  registerUser() {
-    let todo = this.store.collection('todo').valueChanges({ idField: 'id' }) as Observable<any>;
-    let inProgress = this.store.collection('inProgress').valueChanges({ idField: 'id' }) as Observable<any>;
-    let done = this.store.collection('done').valueChanges({ idField: 'id' }) as Observable<any>;
-    // var name = "message"
-    // this.IsWait =true
-    // debugger;
-    // if(this.ans){this._MoodApiService.addCampaign(this.ans).subscribe(x => {
-    //   this.data = x ;
-    //   this.value1 =this.data.Angry
-    //   this.value2=this.data.Happy
-    //   this.value3=this.data.Sad
-    //   this.value4 =this.data.Surprise
-    //   this.value5=this.data.Fear
-    //   this.ELEMENT_DATA.push(this.data)
-    //   this.delete()
-    //   this.ngOnInit()
-    // })}
-    // else{
-    //   alert("API Error 404")
-    // }
-  }
-  displayedColumns: string[] = ["Dairy", "Date"];
-  dataSource = this.data;
-  ELEMENT_DATA: PeriodicElement[] = [];
-  
-//   concatinate() {
-//     const map = new Map(arrays.map(({name, value}) => [name, { name, value: [] }])); 
-// for (let {name, value} of arrays) map.get(name).value.push(...[value].flat());
-// console.log([...map.values()]);
-//   }
 }
-export interface PeriodicElement {
+export interface Dairy {
   Dairy: string;
-  Date: string;
+  Date: Date;
 }

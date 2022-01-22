@@ -56,6 +56,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { QuestionsModalComponent } from './questions-modal/questions-modal.component';
 import { Questions } from './questions-modal/questions';
 import { AngularFireModule } from '@angular/fire';
+import {AngularFireDatabaseModule} from '@angular/fire/database'
 import { environment } from '../../src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 @NgModule({
@@ -74,7 +75,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     QuestionsModalComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule,MatAutocompleteModule,
-    MatBadgeModule,FormsModule,
+    MatBadgeModule,FormsModule,AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     MatBottomSheetModule,
