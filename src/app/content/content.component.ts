@@ -27,6 +27,8 @@ export class ContentComponent implements OnInit {
   val;
   utc;
   policies;
+  ar;
+  hide = 'Show';
   items: Observable<any[]>;
   ana = false;
   dataList = [];
@@ -42,7 +44,9 @@ export class ContentComponent implements OnInit {
   value4 = 0;
   value5 = 0;
   IsWait;
+  edata
   ans;
+  arr =[];
   ELEMENT_DATA = [];
   model: any = {};
   constructor(
@@ -52,7 +56,6 @@ export class ContentComponent implements OnInit {
     private http: HttpClient,
     public dialog: MatDialog
   ) {
-    //this.items = db.list("Dairy").valueChanges();
     this.studentsRef = db.list("Dairy");
     this.items = this.studentsRef.snapshotChanges().pipe(
       map(changes => 
@@ -75,6 +78,8 @@ export class ContentComponent implements OnInit {
 
   ngOnInit() {
     this.eChart();
+    this.ans=[]
+    this.IsWait=false;
     setTimeout( () => { this.delete();}, 200 );
   }
 
@@ -101,35 +106,52 @@ export class ContentComponent implements OnInit {
     }
 
   }
-  concatinate() {
-    this.ana = true;
+  show() {
+    if (this.ana == false){
+      this.hide ='Hide'
+      this.ana =true
+    }
+    else{
+      this.hide ='Show'
+      this.ana = false
+    }
+    
   }
   removeCart(j){
     let tru =confirm("Are you sure you want to delete it?")
-    debugger;
     if (tru == true ){
       this.studentsRef.remove(j.key);
     }
   }
   registerUser() {
-    // Create Student
-    // var name = "message"
-    // this.IsWait =true
-    // debugger;
-    // if(this.ans){this._MoodApiService.addCampaign(this.ans).subscribe(x => {
-    //   this.data = x ;
-    //   this.value1 =this.data.Angry
-    //   this.value2=this.data.Happy
-    //   this.value3=this.data.Sad
-    //   this.value4 =this.data.Surprise
-    //   this.value5=this.data.Fear
-    //   this.ELEMENT_DATA.push(this.data)
-    //   this.delete()
-    //   this.ngOnInit()
-    // })}
-    // else{
-    //   alert("API Error 404")
-    // }
+    this.IsWait= true;
+    this.items.subscribe(x=>{
+      this.edata =x
+      this.api()
+    })
+  }
+  api(){
+    this.edata.forEach(x => {
+      this.ar = x
+      this.arr.push(this.ar.Dairy)
+    });
+    this.hide ='Hide'
+    this.ana =true
+    this.ans = this.arr.join();
+    if(this.ans){this._MoodApiService.addCampaign(this.ans).subscribe(x => {
+      this.data = x ;
+      this.value1 =this.data.Angry
+      this.value2=this.data.Happy
+      this.value3=this.data.Sad
+      this.value4 =this.data.Surprise
+      this.value5=this.data.Fear
+      this.ELEMENT_DATA.push(this.data)
+      this.delete()
+      this.ngOnInit()
+    })}
+    else{
+      alert("API Error 404")
+    }
   }
   displayedColumns: string[] = ["Dairy", "Date","delete"];
   dataSource = this.data;

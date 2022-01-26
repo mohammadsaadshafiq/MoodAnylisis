@@ -25,16 +25,23 @@
             <button
               style="margin-left: 5px"
               class="button"
-              (click)="concatinate()"
+              (click)="registerUser()"
             >
               Analysis
             </button>
+            <button
+            style="margin-left: 5px"
+            class="button"
+            (click)="show()"
+          >
+            {{hide}}
+          </button>
           </div>
         </form>
       </mat-card>
     </div>
     <div class="col-2">
-      <div
+      <div *ngIf ="ana"
         style="z-index:1000; margin-right:5%; width: 150% ;margin-left: -97px;
         margin-top:33px"
         echarts

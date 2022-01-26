@@ -10,9 +10,9 @@ export class MoodApiService {
   constructor(private http: HttpClient) { }
   addCampaign(value:string) {
     const headerDict = {
-      'apikey': 'e2ZnOVS1SR9UI9qcPRvudgC8GhjeFYeN',
+      //'apikey': 'e2ZnOVS1SR9UI9qcPRvudgC8GhjeFYeN',
       //'apikey': 'w1ve6O9zLxJjEnAEVHpDqGXvHg1rfDTF',
-      //'apikey': '6sl9H2vhAd0og41qLF1ZffxXXsoCNDSP',
+      'apikey': '6sl9H2vhAd0og41qLF1ZffxXXsoCNDSP',
       //'apiKey':'SiV9M7QLBDTcdVo4nsGbLhdDnih1QhSx'
     }
     const requestOptions = {                                                                                                                                                                                 
