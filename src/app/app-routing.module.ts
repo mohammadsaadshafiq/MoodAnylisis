@@ -11,7 +11,7 @@ import { PricingComponent } from './pricing/pricing.component';
 import { HeaderComponent } from './header/header.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/Home', pathMatch: 'full' },
+  { path: '', redirectTo: '/Services', pathMatch: 'full' },
   { path: 'Home', component: HeaderComponent },
   { path: 'About', component: IntroComponent },
   { path: 'Services', component: ContentComponent },
