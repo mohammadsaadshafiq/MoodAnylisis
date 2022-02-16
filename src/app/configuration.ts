@@ -1,9 +1,9 @@
 export const configuration = {
   header: {
-    heading: 'Lift My Mood',
+    heading: 'My Dairy ',
     headingtext:
-      'This tool will anaylyse your mood according to text provided',
-    buttontext: 'Mood Lifter',
+      'Your personal companion to sumit your feelings to !',
+    buttontext: 'Mood Dairy',
     buttonlink: '\Services'
   }
 };
