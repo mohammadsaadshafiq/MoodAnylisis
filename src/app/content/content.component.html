@@ -12,72 +12,73 @@
             <mat-dialog-content class="mat-typography">
               <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>What's in your mind?</mat-label>
-                <textarea style="  height: 200px;"
+                <textarea
+                  style="  height: 200px;"
                   matInput
                   #message
                   name="message"
                   [(ngModel)]="val"
                   minlength="10"
-                  placeholder="Ex. How are you feeling today..."></textarea>
+                  placeholder="Ex. How are you feeling today..."
+                ></textarea>
               </mat-form-field>
             </mat-dialog-content>
             <button class="button" (click)="save()">Save</button>
-            <button
-              style="margin-left: 5px"
-              class="button"
-              (click)="registerUser()"
-            >
-              Analysis
-            </button>
-            <button
-            style="margin-left: 5px"
-            class="button"
-            (click)="show()"
-          >
-            {{hide}}
-          </button>
           </div>
         </form>
       </mat-card>
     </div>
-    <div class="col-2">
-      <div *ngIf ="ana"
+    <div style="padding-top:4%" class="col-2">
+      <div
+        *ngIf="ana"
         style="z-index:1000; margin-right:5%; width: 150% ;margin-left: -97px;
         margin-top:33px"
         echarts
         [options]="options"
         class="echart"
       ></div>
-    </div>
+    
+    <button style="margin-left: 5px; " class="button" (click)="registerUser()">
+      Analysis
+    </button>
+    <button style="margin-left: 5px;  "class="button" (click)="show()">
+      {{ hide }}
+    </button>
+  </div>
     <div class="col-1">
       <div class="height-adjust">
         <table mat-table matTable [dataSource]="dataSource">
-        <!--- Note that these columns can be defined in any order.
+          <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-        <!-- Position Column -->
-        <ng-container matColumnDef="delete">
-          <th mat-header-cell *matHeaderCellDef >Delete</th>
-          <td mat-cell *matCellDef="let item of items | async"> 
-              <mat-icon (click)="removeCart(item)" class="removeCart">delete</mat-icon>
-          </td>
-      </ng-container>
-        <ng-container matColumnDef="Date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let item of items | async">{{ item.Date }}</td>
-        </ng-container>
-        <!-- Name Column -->
-        <ng-container matColumnDef="Dairy">
-          <th mat-header-cell *matHeaderCellDef>Dairy</th>
-          <td mat-cell *matCellDef="let item of items | async">{{ item.Dairy }}</td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+          <!-- Position Column -->
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef>Delete</th>
+            <td mat-cell *matCellDef="let item of items | async">
+              <mat-icon (click)="removeCart(item)" class="removeCart"
+                >delete</mat-icon
+              >
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let item of items | async">
+              {{ item.Date }}
+            </td>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="Dairy">
+            <th mat-header-cell *matHeaderCellDef>Dairy</th>
+            <td mat-cell *matCellDef="let item of items | async">
+              {{ item.Dairy }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
       </div>
     </div>
     <!--End Content Right Side-->
-   
   </div>
 </div>
 

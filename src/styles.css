@@ -738,7 +738,11 @@ nav#nav-mobile a:hover {
 .social-icons span {
     display: none;
 }
-
+mat-cell > span.ellipsis {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+ }
 #header .social-icons {
     margin-top: 27px;
 }
