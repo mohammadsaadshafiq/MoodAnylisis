@@ -1,23 +1,19 @@
-# :zap: Angular Website Example / Mood Anylysis Website
+# :zap: My Dairy Website
 
-* Converts a (free) html template to Angular 11. Do not update to Angular12.
-* Tutorial code from [AdMISTER STUDIOs](https://www.youtube.com/c/AdMISTERSTUDIOs/featured) - see [:clap: Inspiration](#clap-inspiration) below.
-* **Note:** to open web links in a new window use: _ctrl+click on link_
+* Stack
+ * Angular 11 
+ * Angular Material
+ * MAT- TABLE
+ * E-Charts
+ * 3rd Part API (https://apilayer.com/marketplace/description/text_to_emotion-api#documentation-tab)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/AndrewJBateman/angular-website-example?style=plastic)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/AndrewJBateman/angular-website-example?style=plastic)
-![GitHub Repo stars](https://img.shields.io/github/stars/AndrewJBateman/angular-website-example?style=plastic)
-![GitHub last commit](https://img.shields.io/github/last-commit/AndrewJBateman/angular-website-example?style=plastic)
-
-
-## :books: General info
-
-* Youtube videos - convert html template to angular website - follow 16 parts.
+* Get Started
+ * Clone the project 
+ * Run NPM I
+ * RUM NPM START
 
 ## :camera: Screenshots
-![image](https://user-images.githubusercontent.com/45943733/153157252-80716db2-adc1-4e1d-a5e4-243525fcb31d.png)
-
-## :signal_strength: Technologies
+![6c0138e5-e3e6-41de-a8bf-7dce37a4e2c3](https://user-images.githubusercontent.com/45943733/154260674-45496491-abf6-4993-9548-b123f1b18651.jpg)
 
 
 
