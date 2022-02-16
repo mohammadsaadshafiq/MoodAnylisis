@@ -1,13 +1,13 @@
 # :zap: My Dairy Website
 
 * Stack
- * Angular 11 
- * Angular Material
- * MAT- TABLE
- * E-Charts
- * 3rd Part API (https://apilayer.com/marketplace/description/text_to_emotion-api#documentation-tab)
-
-* Get Started
+ # 🏴: Angular 11 
+# 🏴: Angular Material
+ # 🏴: MAT- TABLE
+# 🏴: E-Charts
+ # 🏴: 3rd Part API (https://apilayer.com/marketplace/description/text_to_emotion-api#documentation-tab)
+# 🏴: Firebase
+# ⭐: Get Started
  * Clone the project 
  * Run NPM I
  * RUM NPM START
